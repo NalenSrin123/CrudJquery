@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<style>
+    .modals{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(203, 202, 202, 0.767);
+        z-index: 11;
+        display: none;
+    }
+    form.container{
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+</style>
+<body>
+    <div class="container">
+        <h1>Data</h1>
+        <button class="btn btn-primary float-end btnAdd">Add Employee</button>
+        <table class="table table-hover align-middle text-center" style="table-layout: fixed;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Sex</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+               
+                    
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="modals">
+        <form action="" class="container w-25 p-3 bg-light mt-5 rounded">
+            <h3>Employee</h3>
+            <div class="form-group">
+                <label for="id" class="form-label">ID</label>
+                <input type="text" name="" id="id" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" name="" id="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="sex" class="form-label">Sex</label>
+                <input type="text" name="" id="sex" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="pos" class="form-label">Position</label>
+                <input type="text" name="" id="pos" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="salary" class="form-label">Salary</label>
+                <input type="text" name="" id="salary" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="button" class=" mt-2 btn btn-success btnSave">Save</button>
+                <button type="button" class=" mt-2 btn btn-danger btnCancel">Cancel</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(()=>{
+        var editRow=null;
+        $('.btnAdd').click(()=>{
+            $('.modals').fadeIn(300)
+            clearValue()
+            editRow=null;
+        })
+        $('.btnCancel').click(()=>{
+            $('.modals').fadeOut(300)
+        })
+        $('.btnSave').click(()=>{
+            $('.modals').fadeOut(300);
+            var id=$('#id').val();
+            var name=$('#name').val();
+            var sex=$('#sex').val();
+            var pos=$('#pos').val();
+            var salary=$('#salary').val();
+            if(editRow){
+                editRow.find('td:nth-child(1)').text(id)
+                editRow.find('td:nth-child(2)').text(name)
+                editRow.find('td:nth-child(3)').text(sex)
+                editRow.find('td:nth-child(4)').text(pos)
+                editRow.find('td:nth-child(5)').text(salary)
+            }else{
+                $('.tbody').append(`
+                <tr class="tr">
+                    <td>${id}</td>
+                    <td>${name}</td>
+                    <td>${sex}</td>
+                    <td>${pos}</td>
+                    <td>${salary}</td>
+                    <td><button class="btn btn-success btnEdit">Edit</button>
+                    <button class="btn btn-danger btnDelete">Delete</button></td>
+                </tr>
+            `);
+            }
+        })
+        function clearValue(){
+            var id=$('#id').val('');
+            var name=$('#name').val('');
+            var sex=$('#sex').val('');
+            var pos=$('#pos').val('');
+            var salary=$('#salary').val('');
+        }
+        function deleteEmployee(){
+            $('.tbody').on('click','.btnDelete',function(){
+               const row=$(this).parents('.tr');
+               row.remove();    
+            })
+        }
+        deleteEmployee()
+            $('.tbody').on('click','.btnEdit',function(){
+                $('.modals').fadeIn(300);
+                clearValue()
+                editRow=$(this).parents('.tr');
+                const id=editRow.find('td:nth-child(1)').text();
+                const name=editRow.find('td:nth-child(2)').text();
+                const sex=editRow.find('td:nth-child(3)').text();
+                const position=editRow.find('td:nth-child(4)').text();
+                const salary=editRow.find('td:nth-child(5)').text();
+
+                var fid=$('#id').val(id);
+                var fname=$('#name').val(name);
+                var fsex=$('#sex').val(sex);
+                var fpos=$('#pos').val(position);
+                var fsalary=$('#salary').val(salary);
+            })
+    })
+</script>
